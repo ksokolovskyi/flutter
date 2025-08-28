@@ -912,8 +912,16 @@ class _DropdownMenuState<T> extends State<DropdownMenu<T>> {
                     text: entry.label,
                     selection: TextSelection.collapsed(offset: entry.label.length),
                   );
-                  _selectedEntryIndex = i;
-                  currentHighlight = widget.enableSearch ? i : null;
+                  final int actualEntryIndex = widget.dropdownMenuEntries.indexWhere(
+                    (DropdownMenuEntry<T> e) => entry.value == e.value,
+                  );
+                  if (i != -1) {
+                    _selectedEntryIndex = actualEntryIndex;
+                    currentHighlight = widget.enableSearch ? actualEntryIndex : null;
+                  } else {
+                    _selectedEntryIndex = null;
+                    currentHighlight = null;
+                  }
                   widget.onSelected?.call(entry.value);
                   _enableFilter = false;
                   if (widget.closeBehavior == DropdownMenuCloseBehavior.self) {
